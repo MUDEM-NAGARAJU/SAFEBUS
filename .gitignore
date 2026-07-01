@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+env/
+
+# Environment Variables
+.env
+
+# Database
+db.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Python cache
+*.log
+*.pot
+*.pyc
+
+# Media
+media/
+
+# Static collected files
+staticfiles/
+
+# Migrations cache
+*.egg-info/
