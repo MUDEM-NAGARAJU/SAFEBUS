@@ -17,9 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="SAFEBUS API",
+      default_version='v1',
+      description="Bus Ticket Booking System API",
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/accounts/", include("accounts.urls")),
     path("api/", include("buses.urls")),
+    path("api/", include("routes.urls")),
+    path("api/", include("trips.urls")),
+    path("api/", include("bookings.urls")),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
 ]
+
