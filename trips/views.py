@@ -49,10 +49,20 @@ class TripViewSet(viewsets.ModelViewSet):
         date = self.request.query_params.get("date")
 
         if from_loc and to_loc:
-            qs = qs.filter(
-                Q(route__source__icontains=from_loc) &
-                Q(route__destination__icontains=to_loc)
-            )
+            from_stops = RouteStop.objects.filter(stop_name__icontains=from_loc)
+            valid_route_ids = []
+
+            for from_stop in from_stops:
+                has_valid_dropping = RouteStop.objects.filter(
+                    route=from_stop.route,
+                    stop_name__icontains=to_loc,
+                    sequence__gt=from_stop.sequence,
+                ).exists()
+
+                if has_valid_dropping:
+                    valid_route_ids.append(from_stop.route_id)
+
+            qs = qs.filter(route_id__in=valid_route_ids)
 
         if date:
             qs = qs.filter(travel_date=date)
