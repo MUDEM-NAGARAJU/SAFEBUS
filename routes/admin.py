@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Route
+from .models import Route, RouteStop, StopFare
 
 
 @admin.register(Route)
@@ -10,7 +10,6 @@ class RouteAdmin(admin.ModelAdmin):
         "destination",
         "distance",
         "estimated_duration",
-        "fare",
         "is_active",
     )
 
@@ -22,4 +21,28 @@ class RouteAdmin(admin.ModelAdmin):
     list_filter = (
         "is_active",
     )
-# Register your models here.
+
+
+@admin.register(RouteStop)
+class RouteStopAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "route",
+        "sequence",
+        "stop_name",
+        "distance_from_origin_km",
+        "arrival_offset_minutes",
+    )
+
+    list_filter = ("route",)
+    ordering = ("route", "sequence")
+
+
+@admin.register(StopFare)
+class StopFareAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "route_stop",
+        "seater_fare",
+        "sleeper_fare",
+    )

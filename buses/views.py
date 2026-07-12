@@ -1,6 +1,5 @@
 from rest_framework import viewsets
-
-from .models import Bus
+from .models import Bus, generate_seats_for_bus
 from .serializers import BusSerializer
 
 
@@ -24,3 +23,7 @@ class BusViewSet(viewsets.ModelViewSet):
         "bus_type",
         "is_active",
     ]
+
+    def perform_create(self, serializer):
+        bus = serializer.save()
+        generate_seats_for_bus(bus)

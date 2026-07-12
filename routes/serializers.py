@@ -12,8 +12,3 @@ class RouteSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Distance must be greater than 0")
         return value
-
-    def validate_fare(self, value):
-        if value <= 0:
-            raise serializers.ValidationError("Fare must be greater than 0")
-        return value

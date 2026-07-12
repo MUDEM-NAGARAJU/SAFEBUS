@@ -15,11 +15,7 @@ class Trip(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
 
     travel_date = models.DateField()
-    arrival_time = models.TimeField(null=True, blank=True)
-    departure_time = models.TimeField(null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-
-    available_seats = models.PositiveIntegerField()
+    departure_time = models.TimeField()
 
     status = models.CharField(
         max_length=20,

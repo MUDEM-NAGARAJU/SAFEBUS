@@ -16,7 +16,6 @@ class TripViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter,
     ]
 
-    # OPTIONAL: simple search (bus name / route text search)
     search_fields = [
         "bus__bus_name",
         "route__source",
@@ -25,8 +24,7 @@ class TripViewSet(viewsets.ModelViewSet):
 
     ordering_fields = [
         "travel_date",
-        "price",
-        "available_seats",
+        "departure_time",
     ]
 
     filterset_fields = [
@@ -36,7 +34,6 @@ class TripViewSet(viewsets.ModelViewSet):
         "route",
     ]
 
-    # CUSTOM SEARCH (IMPORTANT for your UI: from, to, date)
     def get_queryset(self):
         qs = super().get_queryset()
 
