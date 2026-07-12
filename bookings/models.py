@@ -4,6 +4,9 @@ from trips.models import Trip
 from buses.models import Seat
 from routes.models import RouteStop
 from django.utils.timezone import now
+from datetime import timedelta
+from django.utils import timezone
+import uuid
 
 User = get_user_model()
 
@@ -21,7 +24,7 @@ class Booking(models.Model):
         ("FAILED", "Failed"),
     ]
 
-    booking_reference = models.CharField(max_length=20, unique=True, blank=True)
+    booking_reference = models.CharField(max_length=30, unique=True, blank=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name="bookings")
@@ -52,14 +55,9 @@ class Booking(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.booking_reference:
-            self.booking_reference = f"SB{now().strftime('%Y%m%d%H%M%S')}{self.user_id}"
+            unique_suffix = uuid.uuid4().hex[:6].upper()
+            self.booking_reference = f"SB{now().strftime('%Y%m%d%H%M%S')}{unique_suffix}"
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.booking_reference} - {self.user.username}"
-    
-from datetime import timedelta
-from django.utils import timezone
 
 
 class SeatHold(models.Model):
