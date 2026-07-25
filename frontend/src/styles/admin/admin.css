@@ -1,0 +1,26 @@
+.admin-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.admin-grid button {
+  padding: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  background: #222;
+  color: white;
+  border-radius: 10px;
+}
+
+.admin-grid button:hover {
+  background: #444;
+}

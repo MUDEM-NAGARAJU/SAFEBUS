@@ -1,0 +1,22 @@
+.admin-module {
+  padding: 20px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-actions button {
+  padding: 10px 15px;
+  cursor: pointer;
+  background: #222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.admin-content {
+  margin-top: 20px;
+}
