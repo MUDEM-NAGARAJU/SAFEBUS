@@ -27,7 +27,7 @@ function DeleteTrip() {
     try {
       await API.delete(`trips/${id}/`);
       alert("Trip deleted successfully!");
-      fetchTrips(); // refresh list
+      fetchTrips();
     } catch (err) {
       console.log("Delete error:", err);
       alert("Delete failed");
@@ -50,7 +50,7 @@ function DeleteTrip() {
           }}
         >
           <span>
-            {t.route?.source} → {t.route?.destination} | {t.travel_date}
+            {t.route_detail?.source} → {t.route_detail?.destination} | {t.travel_date}
           </span>
 
           <button

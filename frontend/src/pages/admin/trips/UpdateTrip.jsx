@@ -9,11 +9,9 @@ function UpdateTrip() {
     bus: "",
     route: "",
     travel_date: "",
-    price: "",
-    available_seats: "",
+    departure_time: "",
   });
 
-  // Load all trips
   const fetchTrips = async () => {
     try {
       const res = await API.get("trips/");
@@ -27,15 +25,13 @@ function UpdateTrip() {
     fetchTrips();
   }, []);
 
-  // When admin selects a trip
   const handleSelect = (trip) => {
     setForm({
       id: trip.id,
-      bus: trip.bus.id,
-      route: trip.route.id,
+      bus: trip.bus,
+      route: trip.route,
       travel_date: trip.travel_date,
-      price: trip.price,
-      available_seats: trip.available_seats,
+      departure_time: trip.departure_time,
     });
   };
 
@@ -43,7 +39,6 @@ function UpdateTrip() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Update API call
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -52,15 +47,14 @@ function UpdateTrip() {
         bus: form.bus,
         route: form.route,
         travel_date: form.travel_date,
-        price: form.price,
-        available_seats: form.available_seats,
+        departure_time: form.departure_time,
       });
 
       alert("Trip updated successfully!");
       fetchTrips();
     } catch (err) {
-      console.log("Update error:", err);
-      alert("Update failed");
+      console.log("Update error:", err.response?.data);
+      alert("Update failed: " + JSON.stringify(err.response?.data));
     }
   };
 
@@ -68,18 +62,16 @@ function UpdateTrip() {
     <div>
       <h2>Update Trip</h2>
 
-      {/* TRIP LIST */}
       <h3>Select Trip</h3>
       {trips.map((t) => (
         <div key={t.id} style={{ marginBottom: "10px" }}>
           <span>
-            {t.route?.source} → {t.route?.destination} | {t.travel_date}
+            {t.route_detail?.source} → {t.route_detail?.destination} | {t.travel_date}
           </span>
           <button onClick={() => handleSelect(t)}>Edit</button>
         </div>
       ))}
 
-      {/* EDIT FORM */}
       {form.id && (
         <form onSubmit={handleUpdate}>
           <h3>Editing Trip ID: {form.id}</h3>
@@ -107,17 +99,11 @@ function UpdateTrip() {
             onChange={handleChange}
           />
 
+          <label>Departure Time</label>
           <input
-            type="number"
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-          />
-
-          <input
-            type="number"
-            name="available_seats"
-            value={form.available_seats}
+            type="time"
+            name="departure_time"
+            value={form.departure_time}
             onChange={handleChange}
           />
 

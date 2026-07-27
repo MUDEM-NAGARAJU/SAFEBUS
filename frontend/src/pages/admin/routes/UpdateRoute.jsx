@@ -10,10 +10,8 @@ function UpdateRoute() {
     destination: "",
     distance: "",
     estimated_duration: "",
-    fare: "",
   });
 
-  // Load all routes
   const fetchRoutes = async () => {
     try {
       const res = await API.get("routes/");
@@ -27,7 +25,6 @@ function UpdateRoute() {
     fetchRoutes();
   }, []);
 
-  // Select route to edit
   const handleSelect = (route) => {
     setForm({
       id: route.id,
@@ -37,20 +34,14 @@ function UpdateRoute() {
       estimated_duration: route.estimated_duration
         ? route.estimated_duration.substring(0, 5)
         : "",
-      fare: route.fare,
     });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setForm({
-      ...form,
-      [name]: value,
-    });
+    setForm({ ...form, [name]: value });
   };
 
-  // Update route
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -60,12 +51,10 @@ function UpdateRoute() {
         destination: form.destination.toUpperCase(),
         distance: Number(form.distance),
         estimated_duration: `${form.estimated_duration}:00`,
-        fare: Number(form.fare),
         is_active: true,
       });
 
       alert("Route updated successfully!");
-
       fetchRoutes();
 
       setForm({
@@ -74,7 +63,6 @@ function UpdateRoute() {
         destination: "",
         distance: "",
         estimated_duration: "",
-        fare: "",
       });
     } catch (err) {
       console.log("Update Error:", err.response?.data);
@@ -86,7 +74,6 @@ function UpdateRoute() {
     <div>
       <h2>Update Route</h2>
 
-      {/* Route List */}
       {routes.map((route) => (
         <div
           key={route.id}
@@ -103,16 +90,13 @@ function UpdateRoute() {
               {route.source} → {route.destination}
             </strong>
             <br />
-            {route.distance} KM | {route.estimated_duration} | ₹{route.fare}
+            {route.distance} KM | {route.estimated_duration}
           </span>
 
-          <button onClick={() => handleSelect(route)}>
-            Edit
-          </button>
+          <button onClick={() => handleSelect(route)}>Edit</button>
         </div>
       ))}
 
-      {/* Edit Form */}
       {form.id && (
         <form onSubmit={handleUpdate}>
           <h3>Editing Route #{form.id}</h3>
@@ -152,19 +136,7 @@ function UpdateRoute() {
             required
           />
 
-          <input
-            type="number"
-            step="0.01"
-            name="fare"
-            value={form.fare}
-            onChange={handleChange}
-            placeholder="Fare"
-            required
-          />
-
-          <button type="submit">
-            Update Route
-          </button>
+          <button type="submit">Update Route</button>
         </form>
       )}
     </div>

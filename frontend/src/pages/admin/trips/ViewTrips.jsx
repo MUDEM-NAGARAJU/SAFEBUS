@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import API from "../../../api/axios";
 
@@ -34,8 +33,8 @@ function ViewTrips() {
             <th>Bus</th>
             <th>Route</th>
             <th>Date</th>
-            <th>Price</th>
-            <th>Seats</th>
+            <th>Departure</th>
+            <th>Status</th>
           </tr>
         </thead>
 
@@ -43,13 +42,13 @@ function ViewTrips() {
           {trips.map((trip) => (
             <tr key={trip.id}>
               <td>{trip.id}</td>
-              <td>{trip.bus?.bus_name}</td>
+              <td>{trip.bus_detail?.bus_name} ({trip.bus_detail?.bus_number})</td>
               <td>
-                {trip.route?.source} → {trip.route?.destination}
+                {trip.route_detail?.source} → {trip.route_detail?.destination}
               </td>
               <td>{trip.travel_date}</td>
-              <td>{trip.price}</td>
-              <td>{trip.available_seats}</td>
+              <td>{trip.departure_time}</td>
+              <td>{trip.status}</td>
             </tr>
           ))}
         </tbody>

@@ -9,11 +9,9 @@ function AddTrip() {
     bus: "",
     route: "",
     travel_date: "",
-    price: "",
-    available_seats: "",
+    departure_time: "",
   });
 
-  // Load buses + routes
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,12 +19,10 @@ function AddTrip() {
         const routeRes = await API.get("routes/");
         setBuses(busRes.data?.results || busRes.data || []);
         setRoutes(routeRes.data?.results || routeRes.data || []);
-
       } catch (err) {
         console.log("Error loading data", err);
       }
     };
-
     fetchData();
   }, []);
 
@@ -41,17 +37,15 @@ function AddTrip() {
       await API.post("trips/", form);
       alert("Trip added successfully!");
 
-      // reset form
       setForm({
         bus: "",
         route: "",
         travel_date: "",
-        price: "",
-        available_seats: "",
+        departure_time: "",
       });
     } catch (err) {
-      console.log("Error adding trip", err);
-      alert("Failed to add trip");
+      console.log("Error adding trip", err.response?.data);
+      alert("Failed to add trip: " + JSON.stringify(err.response?.data));
     }
   };
 
@@ -60,65 +54,24 @@ function AddTrip() {
       <h2>Add Trip</h2>
 
       <form onSubmit={handleSubmit}>
-
-        {/* BUS */}
-        <select
-          name="bus"
-          value={form.bus}
-          onChange={handleChange}
-          required
-        >
+        <select name="bus" value={form.bus} onChange={handleChange} required>
           <option value="">Select Bus</option>
           {buses.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.bus_name}
-            </option>
+            <option key={b.id} value={b.id}>{b.bus_name}</option>
           ))}
         </select>
 
-        {/* ROUTE */}
-        <select
-          name="route"
-          value={form.route}
-          onChange={handleChange}
-          required
-        >
+        <select name="route" value={form.route} onChange={handleChange} required>
           <option value="">Select Route</option>
           {routes.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.source} → {r.destination}
-            </option>
+            <option key={r.id} value={r.id}>{r.source} → {r.destination}</option>
           ))}
         </select>
 
-        {/* DATE */}
-        <input
-          type="date"
-          name="travel_date"
-          value={form.travel_date}
-          onChange={handleChange}
-          required
-        />
+        <input type="date" name="travel_date" value={form.travel_date} onChange={handleChange} required />
 
-        {/* PRICE */}
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleChange}
-          required
-        />
-
-        {/* SEATS */}
-        <input
-          type="number"
-          name="available_seats"
-          placeholder="Seats"
-          value={form.available_seats}
-          onChange={handleChange}
-          required
-        />
+        <label>Departure Time</label>
+        <input type="time" name="departure_time" value={form.departure_time} onChange={handleChange} required />
 
         <button type="submit">Add Trip</button>
       </form>

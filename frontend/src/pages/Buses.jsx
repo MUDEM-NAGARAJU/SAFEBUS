@@ -1,59 +1,70 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
 export default function Buses() {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const from = params.get("from");
   const to = params.get("to");
-
-  const [buses, setBuses] = useState([]);
-  const [filter, setFilter] = useState("all");
   const date = params.get("date");
 
+  const [trips, setTrips] = useState([]);
+  const [filter, setFilter] = useState("all");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchBuses = async () => {
-      const res = await API.get(`buses/?from=${from}&to=${to}&date=${date}`);
-      setBuses(res.data.results || []);
+    const fetchTrips = async () => {
+      setLoading(true);
+      try {
+        const res = await API.get(`trips/?from=${from}&to=${to}&date=${date}`);
+        setTrips(res.data.results || []);
+      } catch (err) {
+        console.log(err.response?.data);
+        setError("Failed to load trips");
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchTrips();
+  }, [from, to, date]);
 
-    fetchBuses();
-  }, [from, to]);
-
-  // FILTER LOGIC
-  const filtered = buses
-    .filter((bus) => {
-      if (filter === "ac") return bus.ac === true;
-      if (filter === "nonac") return bus.ac === false;
-      return true;
-    })
-    .sort((a, b) => {
-      if (filter === "low") return a.price - b.price;
-      if (filter === "high") return b.price - a.price;
-      return 0;
-    });
+  const filtered = trips.filter((trip) => {
+    if (filter === "ac") return trip.bus_detail?.ac_type === "AC";
+    if (filter === "nonac") return trip.bus_detail?.ac_type === "NON_AC";
+    return true;
+  });
 
   return (
-    <div>
-      <h2>Available Buses</h2>
+    <div style={{ padding: 20 }}>
+      <h2>Trips: {from} → {to} on {date}</h2>
 
-      {/* FILTERS */}
-      <div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <div style={{ marginBottom: 15 }}>
         <button onClick={() => setFilter("all")}>All</button>
         <button onClick={() => setFilter("ac")}>AC</button>
         <button onClick={() => setFilter("nonac")}>NON-AC</button>
-        <button onClick={() => setFilter("low")}>Price Low → High</button>
-        <button onClick={() => setFilter("high")}>Price High → Low</button>
       </div>
 
-      {/* RESULTS */}
-      {filtered.map((bus) => (
-        <div key={bus.id}>
-          <h3>{bus.name}</h3>
-          <p>Price: ₹{bus.price}</p>
-          <p>{bus.ac ? "AC" : "NON-AC"}</p>
-        </div>
-      ))}
+      {loading ? (
+        <p>Loading...</p>
+      ) : filtered.length === 0 ? (
+        <p>No trips found for this route/date.</p>
+      ) : (
+        filtered.map((trip) => (
+          <div key={trip.id} style={{ border: "1px solid #ccc", margin: "10px 0", padding: 15, borderRadius: 8 }}>
+            <h3>{trip.bus_detail?.bus_name} ({trip.bus_detail?.bus_number})</h3>
+            <p>{trip.bus_detail?.bus_type} / {trip.bus_detail?.ac_type}</p>
+            <p>Route: {trip.route_detail?.source} → {trip.route_detail?.destination}</p>
+            <p>Date: {trip.travel_date} | Departure: {trip.departure_time}</p>
+            <button onClick={() => navigate(`/trip/${trip.id}/seats?from=${from}&to=${to}`)}>
+              Select Seats
+            </button>
+          </div>
+        ))
+      )}
     </div>
   );
 }

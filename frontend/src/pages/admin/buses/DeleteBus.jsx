@@ -4,7 +4,6 @@ import API from "../../../api/axios";
 function DeleteBus() {
   const [buses, setBuses] = useState([]);
 
-  // fetch all buses
   const fetchBuses = async () => {
     try {
       const res = await API.get("buses/");
@@ -18,7 +17,6 @@ function DeleteBus() {
     fetchBuses();
   }, []);
 
-  // delete bus
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this bus?"
@@ -29,7 +27,7 @@ function DeleteBus() {
     try {
       await API.delete(`buses/${id}/`);
       alert("Bus deleted successfully!");
-      fetchBuses(); // refresh list
+      fetchBuses();
     } catch (err) {
       console.log("Delete error:", err);
       alert("Failed to delete bus");
@@ -52,7 +50,7 @@ function DeleteBus() {
           }}
         >
           <span>
-            {b.bus_name} ({b.bus_number}) | Capacity: {b.capacity}
+            {b.bus_name} ({b.bus_number}) | Seats: {b.total_seats}
           </span>
 
           <button

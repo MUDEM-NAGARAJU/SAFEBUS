@@ -61,8 +61,6 @@ function DeleteRoute() {
               Distance: {route.distance} KM
               <br />
               Duration: {route.estimated_duration}
-              <br />
-              Fare: ₹{route.fare}
             </div>
 
             <button
