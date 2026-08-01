@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import "../styles/login.css";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
   const [username, setUsername] = useState("");
@@ -17,7 +18,13 @@ export default function Login() {
     try {
       const res = await API.post("accounts/login/", { username, password });
       login(res.data);
-      navigate(res.data.is_staff ? "/admin" : "/search");
+
+      const redirectTo = location.state?.from?.pathname;
+      if (redirectTo) {
+        navigate(redirectTo + (location.state.from.search || ""));
+      } else {
+        navigate(res.data.is_staff ? "/admin" : "/search");
+      }
     } catch {
       setError("Invalid username or password");
     }
@@ -35,6 +42,11 @@ export default function Login() {
           <button className="login-button" type="submit">Login</button>
           {error && <p className="login-error">{error}</p>}
         </form>
+        <p className="login-register-text">
+          <span className="login-register-link" onClick={() => navigate("/forgot-password")}>
+            Forgot password?
+          </span>
+        </p>
         <p className="login-register-text">
           New user?{" "}
           <span className="login-register-link" onClick={() => navigate("/register")}>

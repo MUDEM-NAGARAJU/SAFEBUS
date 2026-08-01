@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
-
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 import Search from "./pages/Search";
 import Buses from "./pages/Buses";
 import SeatSelection from "./pages/SeatSelection";
@@ -16,6 +16,7 @@ import TripsAdmin from "./pages/admin/trips/TripsAdmin";
 import BusesAdmin from "./pages/admin/buses/BusesAdmin";
 import RoutesAdmin from "./pages/admin/routes/RoutesAdmin";
 
+
 function App() {
   return (
     <AuthProvider>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/search" element={<Search />} />
           <Route path="/buses" element={<Buses />} />
 

@@ -1,9 +1,10 @@
 from rest_framework import viewsets
 from .models import Bus, generate_seats_for_bus
 from .serializers import BusSerializer
-
+from common.permissions import IsStaffOrReadOnly
 
 class BusViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsStaffOrReadOnly]
     queryset = Bus.objects.all().order_by("id")
     serializer_class = BusSerializer
 

@@ -5,17 +5,18 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils import timezone
-
 from .models import Trip
 from .serializers import TripSerializer
 from routes.models import RouteStop
 from bookings.views import is_seat_available
 from bookings.models import SeatHold
-
+from common.permissions import IsStaffOrReadOnly
 
 class TripViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsStaffOrReadOnly]
     queryset = Trip.objects.select_related("bus", "route").all().order_by("-travel_date")
     serializer_class = TripSerializer
+    
 
     filter_backends = [
         DjangoFilterBackend,
