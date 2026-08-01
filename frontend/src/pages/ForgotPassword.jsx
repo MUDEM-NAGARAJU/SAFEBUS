@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../styles/login.css";
+import PasswordInput from "../components/PasswordInput";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
@@ -83,14 +84,10 @@ export default function ForgotPassword() {
               className="login-input" placeholder="Enter 6-digit OTP"
               value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} required
             />
-            <input
-              className="login-input" type="password" placeholder="New Password"
-              value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required
-            />
-            <input
-              className="login-input" type="password" placeholder="Confirm New Password"
-              value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required
-            />
+            <PasswordInput placeholder="New Password" 
+             value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+            <PasswordInput placeholder="Confirm New Password" 
+             value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             <button className="login-button" type="submit" disabled={loading}>
               {loading ? "Resetting..." : "Reset Password"}
             </button>

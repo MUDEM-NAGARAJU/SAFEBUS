@@ -37,12 +37,12 @@ export default function Buses() {
   });
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="page">
       <h2>Trips: {from} → {to} on {date}</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div style={{ marginBottom: 15 }}>
+      <div className="admin-actions">
         <button onClick={() => setFilter("all")}>All</button>
         <button onClick={() => setFilter("ac")}>AC</button>
         <button onClick={() => setFilter("nonac")}>NON-AC</button>
@@ -54,12 +54,12 @@ export default function Buses() {
         <p>No trips found for this route/date.</p>
       ) : (
         filtered.map((trip) => (
-          <div key={trip.id} style={{ border: "1px solid #ccc", margin: "10px 0", padding: 15, borderRadius: 8 }}>
+          <div key={trip.id} className="card">
             <h3>{trip.bus_detail?.bus_name} ({trip.bus_detail?.bus_number})</h3>
             <p>{trip.bus_detail?.bus_type} / {trip.bus_detail?.ac_type}</p>
             <p>Route: {trip.route_detail?.source} → {trip.route_detail?.destination}</p>
             <p>Date: {trip.travel_date} | Departure: {trip.departure_time}</p>
-            <button onClick={() => navigate(`/trip/${trip.id}/seats?from=${from}&to=${to}`)}>
+            <button className="btn" onClick={() => navigate(`/trip/${trip.id}/seats?from=${from}&to=${to}`)}>
               Select Seats
             </button>
           </div>

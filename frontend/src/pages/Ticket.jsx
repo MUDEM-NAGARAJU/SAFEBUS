@@ -7,15 +7,15 @@ export default function Ticket() {
 
   if (!ticket) {
     return (
-      <div style={{ padding: 20 }}>
+      <div className="page-narrow">
         <p>No ticket data found.</p>
-        <button onClick={() => navigate("/search")}>Book a trip</button>
+        <button className="btn" onClick={() => navigate("/search")}>Book a trip</button>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 20, maxWidth: 500, margin: "0 auto", border: "1px solid #ccc", borderRadius: 10 }}>
+    <div className="page-narrow card">
       <h2>🎫 Booking Confirmed!</h2>
       <p><b>References:</b> {ticket.booking_references?.join(", ")}</p>
       <p><b>Bus:</b> {ticket.bus_name} ({ticket.bus_number})</p>
@@ -31,7 +31,7 @@ export default function Ticket() {
       <h3>Total: ₹{ticket.total_fare}</h3>
       <p>Payment: {ticket.payment_status}</p>
 
-      <button onClick={() => navigate("/search")}>Book Another Trip</button>
+      <button className="btn" onClick={() => navigate("/search")}>Book Another Trip</button>
     </div>
   );
 }

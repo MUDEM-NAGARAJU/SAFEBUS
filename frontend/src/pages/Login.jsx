@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import "../styles/login.css";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -37,8 +38,8 @@ export default function Login() {
         <form className="login-form" onSubmit={handleLogin}>
           <input className="login-input" type="text" placeholder="Username"
             value={username} onChange={(e) => setUsername(e.target.value)} />
-          <input className="login-input" type="password" placeholder="Password"
-            value={password} onChange={(e) => setPassword(e.target.value)} />
+          <PasswordInput placeholder="Password"
+           value={password} onChange={(e) => setPassword(e.target.value)} />
           <button className="login-button" type="submit">Login</button>
           {error && <p className="login-error">{error}</p>}
         </form>

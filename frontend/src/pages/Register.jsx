@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../styles/login.css";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -84,14 +85,10 @@ export default function Register() {
             className="login-input" placeholder="Phone Number (10 digits)"
             value={phone_number} onChange={(e) => setPhoneNumber(onlyDigits(e.target.value))}
           />
-          <input
-            className="login-input" type="password" placeholder="Password (min 8, 1 letter, 1 number)"
-            value={password} onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            className="login-input" type="password" placeholder="Confirm Password"
-            value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <PasswordInput placeholder="Password (min 8, 1 letter, 1 number)" 
+           value={password} onChange={(e) => setPassword(e.target.value)} />
+          <PasswordInput placeholder="Confirm Password" 
+           value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
           <button className="login-button" type="submit">Register</button>
           {error && <p className="login-error">{error}</p>}
         </form>

@@ -41,7 +41,7 @@ function AutocompleteInput({ placeholder, value, onChange }) {
   }, []);
 
   return (
-    <div ref={wrapperRef} style={{ position: "relative" }}>
+    <div ref={wrapperRef} style={{ position: "relative", width: "100%" }}>
       <input
         placeholder={placeholder}
         value={value}
@@ -50,7 +50,7 @@ function AutocompleteInput({ placeholder, value, onChange }) {
           setShowList(true);
         }}
         onFocus={() => setShowList(true)}
-        style={{ width: "100%", padding: 8, boxSizing: "border-box" }}
+        style={{ width: "100%", padding: 10, boxSizing: "border-box", fontSize: 16 }}
       />
       {showList && suggestions.length > 0 && (
         <div style={{
@@ -62,7 +62,7 @@ function AutocompleteInput({ placeholder, value, onChange }) {
             <div
               key={name}
               onClick={() => { onChange(name); setShowList(false); }}
-              style={{ padding: 8, cursor: "pointer" }}
+              style={{ padding: 10, cursor: "pointer" }}
               onMouseDown={(e) => e.preventDefault()}
             >
               {name}
@@ -90,10 +90,10 @@ function Search() {
   };
 
   return (
-    <div className="search-container" style={{ padding: 40, maxWidth: 500, margin: "0 auto" }}>
+    <div className="page-narrow">
       <h2>Search Buses</h2>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div className="stack">
         <AutocompleteInput placeholder="From" value={from} onChange={setFrom} />
         <AutocompleteInput placeholder="To" value={to} onChange={setTo} />
 
@@ -102,11 +102,10 @@ function Search() {
           value={date}
           min={new Date().toISOString().split("T")[0]}
           onChange={(e) => setDate(e.target.value)}
+          style={{ width: "100%", padding: 10, boxSizing: "border-box", fontSize: 16 }}
         />
 
-        <button onClick={handleSearch} style={{ padding: 10, cursor: "pointer" }}>
-          Search
-        </button>
+        <button className="btn" onClick={handleSearch}>Search</button>
       </div>
     </div>
   );

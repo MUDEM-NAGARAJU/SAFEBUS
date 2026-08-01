@@ -13,9 +13,9 @@ export default function Payment() {
 
   if (holdIds.length === 0) {
     return (
-      <div style={{ padding: 20 }}>
+      <div className="page-narrow" style={{ textAlign: "center" }}>
         <p>No seats selected.</p>
-        <button onClick={() => navigate("/search")}>Search Buses</button>
+        <button className="btn" onClick={() => navigate("/search")}>Search Buses</button>
       </div>
     );
   }
@@ -34,11 +34,11 @@ export default function Payment() {
   };
 
   return (
-    <div style={{ padding: 20, maxWidth: 400, margin: "0 auto", textAlign: "center" }}>
+    <div className="page-narrow" style={{ textAlign: "center" }}>
       <h2>Payment</h2>
       <p>Amount to pay: <b>₹{totalFare}</b></p>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handlePay} disabled={loading} style={{ padding: "10px 20px" }}>
+      <button className="btn" onClick={handlePay} disabled={loading}>
         {loading ? "Processing..." : "Pay Now"}
       </button>
     </div>

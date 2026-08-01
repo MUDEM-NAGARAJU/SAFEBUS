@@ -13,13 +13,14 @@ export default function Navbar() {
   return (
     <nav style={{
       display: "flex", justifyContent: "space-between", alignItems: "center",
-      padding: "12px 24px", background: "#1a1a2e", color: "white",
+      padding: "12px 16px", background: "#1a1a2e", color: "white",
+      flexWrap: "wrap", gap: 10,
     }}>
       <Link to="/search" style={{ color: "white", fontWeight: "bold", fontSize: 20, textDecoration: "none" }}>
         🚍 SAFEBUS
       </Link>
 
-      <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", fontSize: 14 }}>
         <Link to="/search" style={{ color: "white", textDecoration: "none" }}>Search</Link>
 
         {user && (
