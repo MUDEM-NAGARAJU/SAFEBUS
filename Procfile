@@ -1,0 +1,1 @@
+web: gunicorn SAFEBUS.wsgi --log-file -

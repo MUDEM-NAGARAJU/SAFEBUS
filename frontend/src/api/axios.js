@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
-});
 
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/",
+});
 const PUBLIC_ENDPOINTS = ["accounts/register/", "accounts/login/"];
 
 API.interceptors.request.use((req) => {
@@ -26,8 +26,7 @@ API.interceptors.response.use(
 
       if (refresh) {
         try {
-          const res = await axios.post("http://127.0.0.1:8000/api/accounts/token/refresh/", {
-            refresh,
+          const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}/accounts/token/refresh/`, {
           });
           localStorage.setItem("access", res.data.access);
           original.headers.Authorization = `Bearer ${res.data.access}`;
