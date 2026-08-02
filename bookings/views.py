@@ -8,6 +8,8 @@ from .serializers import BookingSerializer, SeatHoldSerializer
 from trips.models import Trip
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.core.mail import send_mail
+from django.conf import settings
 
 def is_seat_available(trip, seat, boarding_stop, dropping_stop, exclude_hold_id=None):
     req_start = boarding_stop.sequence
@@ -151,6 +153,7 @@ class SeatHoldViewSet(viewsets.ModelViewSet):
             trip = bookings_created[0].trip
             total_fare = sum(b.fare_paid for b in bookings_created)
 
+
             ticket = {
                 "booking_references": [b.booking_reference for b in bookings_created],
                 "bus_name": trip.bus.bus_name,
@@ -168,5 +171,33 @@ class SeatHoldViewSet(viewsets.ModelViewSet):
                 "total_fare": total_fare,
                 "payment_status": "SUCCESS",
             }
+
+            try:
+                seat_lines = "\n".join(
+                    f"  - Seat {s['seat_number']}: ₹{s['fare']}" for s in ticket["seats"]
+                )
+                email_body = (
+                    f"Hi {request.user.first_name or request.user.username},\n\n"
+                    f"Your SAFEBUS ticket is confirmed! 🎫\n\n"
+                    f"Booking Reference(s): {', '.join(ticket['booking_references'])}\n"
+                    f"Bus: {ticket['bus_name']} ({ticket['bus_number']})\n"
+                    f"Type: {ticket['bus_type']} / {ticket['ac_type']}\n"
+                    f"Date: {ticket['travel_date']} | Departure: {ticket['departure_time']}\n"
+                    f"From: {ticket['boarding_stop']} -> To: {ticket['dropping_stop']}\n\n"
+                    f"Seats:\n{seat_lines}\n\n"
+                    f"Total Fare: ₹{ticket['total_fare']}\n"
+                    f"Payment Status: {ticket['payment_status']}\n\n"
+                    f"Thank you for booking with SAFEBUS. Have a safe journey!"
+                )
+
+                send_mail(
+                    subject=f"SAFEBUS Booking Confirmed — {', '.join(ticket['booking_references'])}",
+                    message=email_body,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[request.user.email],
+                    fail_silently=True,
+                )
+            except Exception as e:
+                print(f"Failed to send booking confirmation email: {e}")
 
             return Response(ticket)
