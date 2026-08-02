@@ -28,6 +28,7 @@ export default function Payment() {
       navigate("/ticket", { state: { ticket: res.data } });
     } catch (err) {
       setError(err.response?.data?.detail || "Payment/booking failed. Your hold may have expired — please reselect your seats.");
+      console.log(err.response?.data?.detail)
     } finally {
       setLoading(false);
     }
