@@ -1,161 +1,190 @@
-# 🚌 SAFEBUS
+# 🚍 SAFEBUS — Online Bus Ticket Booking System
 
-A modern **Bus Ticket Booking & Management System** built using **Django REST Framework**. SAFEBUS provides a secure backend API for passengers, bus operators, and administrators to manage routes, buses, bookings, payments, and trip operations efficiently.
+SAFEBUS is a full-stack **Online Bus Ticket Booking System** built using **Django REST Framework** and **React**. The project focuses on solving real-world bus reservation challenges such as **concurrent seat booking**, **segment-wise seat availability**, **JWT authentication**, **email notifications**, and **cumulative fare calculation**, while providing a responsive and user-friendly experience.
 
----
-
-## 📌 Project Overview
-
-SAFEBUS is a backend-focused application designed to simplify online bus ticket booking and transportation management.
-
-The system allows users to:
-
-- Search buses between locations
-- Book bus tickets
-- Manage bookings
-- View trip details
-- Secure authentication
-- Bus & route management
-- Admin dashboard support
-- RESTful APIs for frontend integration
+🔗 **Live Demo:** *Coming Soon*
 
 ---
 
-## 🚀 Features
+# ✨ Features
 
-### 👤 User Features
+## 👤 For Travelers
 
-- User Registration
-- Secure Login
-- JWT Authentication
-- Profile Management
-- Search Buses by Source & Destination
-- View Bus Details
-- View Available Seats
-- Seat Selection During Booking
-- Book Bus Tickets
-- Cancel Bookings
-- View Booking History
-- View Upcoming Trips
-
----
-
-### 🚌 Bus Management
-
-- Add, Update & Delete Buses
-- Bus Types
-- Total Seat Management
-- Bus Availability
-- Amenities Management
-
----
-
-### 🛣 Route Management
-
-- Create Routes
-- Update Routes
-- Delete Routes
-- Source & Destination Management
-- Intermediate Stops
-
----
-
-### 📅 Trip Management
-
-- Schedule Trips
-- Departure & Arrival Time
-- Seat Availability Tracking
-- Trip Status Management
-
----
-
-### 🎫 Booking Management
-
-- Real-Time Seat Booking
+- Secure User Registration & Login
+- JWT Authentication with Access & Refresh Tokens
+- Forgot Password using Email OTP
+- Strong Password Validation
+- Username, Phone Number & Input Validations
+- Password Visibility Toggle
+- Search Buses by Source, Destination & Travel Date
+- Live Autocomplete for Stop Names
+- Date Picker Prevents Past Date Selection
+- View Bus Details without Login
 - Interactive Seat Selection
-- Booking Confirmation
-- Booking History
-- Ticket Cancellation
-
----
-
-### 📧 Notifications
-
+- Lower & Upper Deck Seat Layout
+- Seater & Sleeper Seat Support
+- Real-Time Seat Locking (7 Minutes)
+- Segment-wise Seat Booking
+- Dummy Payment Integration
+- Instant Ticket Booking
 - Automatic Booking Confirmation Email
-- Ticket Details Sent via Email
-- Booking Status Notifications
+- Digital Ticket Generation
+- Booking History (My Bookings)
+- Fully Responsive UI
 
 ---
 
-### 🔒 Security
+## 🚌 For Administrators
 
-- JWT Authentication
-- Protected REST APIs
-- Role-Based Authorization
-- Password Encryption
-- Token Verification
-
----
-
-### ⚙ Developer Features
-
-- RESTful APIs
-- Django REST Framework
-- MySQL Database
-- API Testing with Postman
-- Clean Project Structure
-
-## 🛠 Tech Stack
-
-| Technology | Usage |
-|------------|-------|
-| Python | Programming Language |
-| Django | Web Framework |
-| Django REST Framework | REST APIs |
-| MySQL | Database |
-| JWT | Authentication |
-| Postman | API Testing |
-| Git | Version Control |
-| GitHub | Source Code |
+- Bus Management (Create, Update, Delete)
+- Route Management
+- Route Stop Management
+- Trip Scheduling
+- Fare Configuration
+- Seat Layout Management
+- View All Bookings
+- Manage Available Trips
+- Staff-only CRUD Operations
+- Secure API Access using Custom Permissions
 
 ---
 
-## 📂 Project Structure
+# 🏗️ Architecture Highlights
+
+### 🔒 Concurrency-safe Seat Booking
+
+- Uses **Database Transactions**
+- Implements **select_for_update()** row-level locking
+- Prevents multiple users from booking the same seat simultaneously
+
+---
+
+### 🎫 Segment-wise Seat Allocation
+
+The same seat can be booked by different passengers if their travel segments do not overlap.
+
+Example:
+
+- Passenger A → Hyderabad → Bangalore
+- Passenger B → Bangalore → Chennai
+
+Both passengers can travel using the same seat.
+
+---
+
+### 💰 Cumulative Fare Calculation
+
+Instead of storing fares for every possible source-destination combination, each stop stores a cumulative fare.
+
+Fare Calculation:
 
 ```
+Fare = Destination Fare - Boarding Fare
+```
+
+This reduces redundancy and simplifies fare management.
+
+---
+
+### 🔐 Security
+
+- JWT Authentication
+- Access & Refresh Tokens
+- Protected APIs
+- Custom Staff Permission Class
+- Password Encryption
+- Role-Based Authorization
+
+---
+
+### 📧 Email Notifications
+
+- Password Reset OTP
+- Booking Confirmation Email
+- Digital Ticket Sent via Email
+- Email failures never affect successful bookings
+
+---
+
+# 🛠️ Tech Stack
+
+## Backend
+
+- Python
+- Django 5
+- Django REST Framework
+- Simple JWT
+- MySQL
+- Django Filter
+- django-cors-headers
+
+---
+
+## Frontend
+
+- React
+- Vite
+- React Router
+- Axios
+- CSS
+
+---
+
+## Authentication
+
+- JWT Authentication
+- Access Token
+- Refresh Token
+
+---
+
+## Email Service
+
+- Gmail SMTP
+- OTP Verification
+- Booking Confirmation Emails
+
+---
+
+# 📁 Project Structure
+
+```text
 SAFEBUS/
 │
-├── accounts/
-├── bookings/
-├── buses/
-├── routes/
-├── trips/
-├── payments/
-├── users/
-├── config/
-├── media/
-├── requirements.txt
+├── accounts/             # User Authentication & OTP
+├── bookings/             # Booking Logic & Seat Locking
+├── buses/                # Bus & Seat Management
+├── routes/               # Routes & Stops
+├── trips/                # Trip Scheduling
+├── common/               # Shared Permissions
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   └── styles/
+│
 ├── manage.py
+├── requirements.txt
 └── README.md
 ```
 
-> Folder names may vary slightly depending on your implementation.
+---
+
+# 🚀 Local Setup
+
+## Clone Repository
+
+```bash
+git clone https://github.com/MUDEM-NAGARAJU/SAFEBUS.git
+
+cd SAFEBUS
+```
 
 ---
 
-## ⚙ Installation
-
-### Clone Repository
-
-```bash
-git clone <repository-url>
-```
-
-### Move to Project
-
-```bash
-cd SAFEBUS
-```
+## Backend Setup
 
 ### Create Virtual Environment
 
@@ -163,19 +192,21 @@ cd SAFEBUS
 python -m venv venv
 ```
 
-### Activate Environment
+### Activate Virtual Environment
 
-Windows
+**Windows**
 
 ```bash
 venv\Scripts\activate
 ```
 
-Linux / Mac
+**Linux / macOS**
 
 ```bash
 source venv/bin/activate
 ```
+
+---
 
 ### Install Dependencies
 
@@ -183,29 +214,49 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Configure Database
+---
 
-Update your MySQL credentials inside:
+### Create `.env`
 
+```env
+SECRET_KEY=your-secret-key
+
+DEBUG=True
+
+DB_NAME=safebus_db
+
+DB_USER=root
+
+DB_PASSWORD=yourpassword
+
+DB_HOST=localhost
+
+DB_PORT=3306
+
+EMAIL_HOST_USER=youremail@gmail.com
+
+EMAIL_HOST_PASSWORD=your-app-password
 ```
-settings.py
-```
+
+---
 
 ### Run Migrations
 
 ```bash
-python manage.py makemigrations
-
 python manage.py migrate
 ```
 
-### Create Superuser
+---
+
+### Create Admin
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### Run Server
+---
+
+### Start Backend
 
 ```bash
 python manage.py runserver
@@ -213,77 +264,88 @@ python manage.py runserver
 
 ---
 
-## 📡 API Modules
+## Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+---
+
+# 📡 API Modules
 
 - Authentication
-- Users
-- Buses
-- Routes
-- Trips
-- Bookings
-- Payments
-- Admin
+- User Management
+- Bus Management
+- Route Management
+- Trip Management
+- Booking Management
+- Seat Management
 
 ---
 
-## 🔑 Authentication
+# 🎯 Key Functionalities
 
-This project uses **JWT Authentication**.
-
-Example Authorization Header
-
-```
-Authorization: Bearer <your_access_token>
-```
-
----
-
-## 🧪 API Testing
-
-You can test all APIs using:
-
-- Postman
-- Thunder Client
-- Insomnia
+- User Authentication
+- Bus Search
+- Route Search
+- Seat Selection
+- Seat Locking
+- Segment-wise Booking
+- Fare Calculation
+- Booking Confirmation
+- Email Notifications
+- Ticket Generation
+- Booking History
+- Admin Management
 
 ---
 
-## 📈 Future Improvements
+# 🔮 Future Enhancements
 
-- Online Payment Gateway
-- QR Code Ticket
-- SMS Notifications
+- Razorpay / Stripe Payment Gateway
+- QR Code Based E-Tickets
 - Live Bus Tracking
-- Bus Ratings & Reviews
+- SMS Notifications
 - Refund Management
+- Bus Reviews & Ratings
 - Coupons & Offers
+- Multi-language Support
 - Docker Deployment
-- CI/CD Pipeline
+- CI/CD with GitHub Actions
+- Cloud Deployment (AWS / Azure)
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-**Nagaraju Mudem**
+**Mudem Nagaraju**
 
 Backend Developer
 
 - Python
 - Django
 - Django REST Framework
+- React
 - MySQL
 - REST APIs
 
+GitHub: **https://github.com/MUDEM-NAGARAJU**
+
 ---
 
-## ⭐ Support
+# ⭐ Support
 
-If you found this project useful, please consider giving it a ⭐ on GitHub.
+If you found this project useful, consider giving it a **⭐ Star** on GitHub.
 
 It helps others discover the project and motivates future improvements.
 
 ---
 
-## 📜 License
+# 📄 License
 
-This project is created for learning, portfolio, and educational purposes.
+This project is developed for learning, portfolio, and educational purposes.
