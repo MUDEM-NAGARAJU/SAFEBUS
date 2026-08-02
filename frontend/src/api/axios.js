@@ -28,6 +28,9 @@ API.interceptors.response.use(
         try {
           const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}/accounts/token/refresh/`, {
           });
+          const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}/accounts/token/refresh/`, {
+          refresh,
+          });
           localStorage.setItem("access", res.data.access);
           original.headers.Authorization = `Bearer ${res.data.access}`;
           return API(original);
